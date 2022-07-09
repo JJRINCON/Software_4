@@ -15,6 +15,7 @@ public class Partition {
 	private ArrayList<MyProcess> executing;
 	private ArrayList<MyProcess> expired;
 	private ArrayList<MyProcess> processTerminated;
+	private ArrayList<MyProcess> overSize;
 
 	public Partition(String name, int size) {
 		
@@ -27,12 +28,17 @@ public class Partition {
 		executing = new ArrayList<>();
 		expired = new ArrayList<>();
 		readyAndDespachado = new ArrayList<>();
+		this.overSize = new ArrayList<>();
 	}
 
 	public boolean addProcess(MyProcess myProcess) {
 		if (search(myProcess.getName()) == null) {
-			readyAndDespachado.add(new MyProcess(myProcess.getName(), myProcess.getTime(),myProcess.getSize(), myProcess.isLocked()));
-			processQueueReady.push(myProcess);
+			if(myProcess.getSize() <= this.size) {				
+				readyAndDespachado.add(new MyProcess(myProcess.getName(), myProcess.getTime(),myProcess.getSize(), myProcess.isLocked()));
+				processQueueReady.push(myProcess);
+			}else {
+				overSize.add(new MyProcess(myProcess.getName(), myProcess.getTime(), myProcess.getSize(), myProcess.isLocked()));
+			}
 			return true;
 		}
 		return false;
@@ -112,7 +118,12 @@ public class Partition {
 	public void startSimulation() {
 		while (!processQueueReady.isEmpty()) {
 			MyProcess process = processQueueReady.peek().getData();
-			valideSystemTimer(process);
+//			if(process.getSize() <= this.size) {				
+				valideSystemTimer(process);
+//			}else {
+//				overSize.add(new MyProcess(process.getName(), process.getTime(), process.getSize(), process.isLocked()));
+//				processQueueReady.pop();
+//			}
 		}
 	}
 
@@ -228,6 +239,14 @@ public class Partition {
 	 */
 	public ArrayList<MyProcess> getProcessWakeUp() {
 		return lockedAndWakeUp;
+	}
+	
+	/**
+	 * 
+	 * @return Procesos cuyo tamanio fue mayor al de la particion
+	 */
+	public ArrayList<MyProcess> getOverSize() {
+		return overSize;
 	}
 	
 	public int getSize() {
