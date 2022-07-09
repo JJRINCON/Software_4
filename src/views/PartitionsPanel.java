@@ -1,17 +1,23 @@
 package views;
 
+import models.Partition;
 import presenters.Events;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class PartitionsPanel extends MyGridPanel{
 
     private static final String TITLE = "Lista de particiones";
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 20);
     private static final String TXT_ADD_PARTITION_BTN = "Agregar particion";
+    public static final Color WHITE_COLOR = Color.decode("#FDFEFE");
+    public static final int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+    public static final int HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
     private JPanel partitionsPanel;
+    private JScrollPane scrollPane;
     private ActionListener actionListener;
 
     public PartitionsPanel(ActionListener actionListener){
@@ -35,9 +41,47 @@ public class PartitionsPanel extends MyGridPanel{
     private void initPartitionsPanel(){
         addComponent(new JLabel(""), 0, 1, 12, 0.01);
         partitionsPanel = new JPanel(new GridLayout(2,1,5,5));
-        partitionsPanel.add(new PartitionPanel(actionListener, "Particion 1"));
-        partitionsPanel.add(new PartitionPanel(actionListener, "Particion 2"));
+        partitionsPanel.add(new JLabel(" "));
+        partitionsPanel.add(new JLabel(" "));
         addComponent(partitionsPanel, 0, 2, 12, 0.8);
+    }
+
+    public void updatePartitions(ArrayList<Partition> partitions){
+        removeAll();
+        initTitle();
+        verifyRowsNumber(partitions);
+        scrollPane = new JScrollPane(partitionsPanel);
+        addComponent(scrollPane, 0,1, 12, 0.8);
+        initAddPartitionBtn();
+        updateUI();
+    }
+
+    private void verifyRowsNumber(ArrayList<Partition> partitions){
+        if(partitions.isEmpty()) {
+            partitionsPanel = new JPanel(new GridLayout(2,1, 5,5));
+            partitionsPanel.setBackground(WHITE_COLOR);
+            partitionsPanel.add(new JLabel(" "));
+            partitionsPanel.add(new JLabel(" "));
+        }else if(partitions.size() < 2){
+            partitionsPanel = new JPanel(new GridLayout(2,1, 5,5));
+            partitionsPanel.setBackground(WHITE_COLOR);
+            partitionsPanel.add(new PartitionPanel(actionListener, partitions.get(0).getName(),
+                    partitions.get(0).getSize(), partitions.get(0).getProcessQueue()));
+            partitionsPanel.add(new JLabel(" "));
+        }else{
+            partitionsPanel = new JPanel(new GridLayout(partitions.size(), 1, 5, 5));
+            partitionsPanel.setBackground(WHITE_COLOR);
+            addPartitions(partitions);
+        }
+    }
+
+    private void addPartitions(ArrayList<Partition> partitions){
+        for(Partition partition : partitions){
+            PartitionPanel partitionPanel = new PartitionPanel(actionListener, partition.getName(), partition.getSize(),
+                                                                partition.getProcessQueue());
+            partitionPanel.setPreferredSize(new Dimension((int) (WIDTH * 0.4), (int) (HEIGHT * 0.4)));
+            partitionsPanel.add(partitionPanel);
+        }
     }
 
     public void initAddPartitionBtn(){

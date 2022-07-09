@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.RepeatedNameException;
+
 import java.util.ArrayList;
 
 
@@ -34,7 +36,21 @@ public class Manager {
 		}
 		return null;
 	}
-	
+
+	public void verifyPartitionName(String partitionName) throws RepeatedNameException {
+		for(Partition partition : partitions){
+			if (partition.getName().equalsIgnoreCase(partitionName)){
+				throw new RepeatedNameException(partitionName);
+			}
+		}
+	}
+
+	public void verifyProcessName(String processName) throws RepeatedNameException {
+		for(Partition partition : partitions){
+			partition.verifyProcessName(processName);
+		}
+	}
+
 	public boolean deletePartition(String name) {
 		Partition partition = searchPartition(name);
 		if(partition != null) {
@@ -48,7 +64,7 @@ public class Manager {
 	public boolean addProcess(String partitionName, String processName,int time,int size, boolean isLocked) {
 		Partition partition = searchPartition(partitionName);
 		if (partition!=null) {
-			partition.addProcess(new MyProcess(processName, time,size, isLocked));
+			partition.addProcess(new MyProcess(processName, time, size, isLocked));
 			return true;
 		}else {
 			return false;
@@ -74,7 +90,25 @@ public class Manager {
 			return false;
 		}
 	}
-	
+
+	public void initSimulation(){
+		for(Partition partition : partitions){
+			partition.startSimulation();
+		}
+	}
+
+	public MyProcess searchProcess(String partitionName, String processName){
+		for(Partition partition : partitions){
+			if(partition.getName().equals(partitionName)){
+				MyProcess process = partition.search(processName);
+				if(process != null){
+					return process;
+				}
+			}
+		}
+		return null;
+	}
+
 	public ArrayList<Partition> getPartitions() {
 		return partitions;
 	}

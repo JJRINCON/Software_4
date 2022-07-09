@@ -104,4 +104,10 @@ public class AddPartitionPanel extends MyGridPanel{
             throw new EmptyPartitionSizeException();
         }
     }
+
+    public void setInitialInfo(String name, int size){
+        partitionNameTxt.setText(name);
+        partitionSizeTxt.setText(String.valueOf(size));
+        addBtn.setName(name);
+    }
 }

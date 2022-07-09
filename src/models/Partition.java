@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.RepeatedNameException;
+
 import java.util.ArrayList;
 
 
@@ -149,11 +151,11 @@ public class Partition {
 		return processQueueReady;
 	}
 
-	public void verifyProcessName(String name) throws Exception {
+	public void verifyProcessName(String name) throws RepeatedNameException {
 		Node<MyProcess> temp = processQueueReady.peek();
 		while(temp != null){
 			if(temp.getData().getName().equals(name)){
-				throw new Exception("Nombre de proceso no disponible");
+				throw new RepeatedNameException(name);
 			}
 			temp = temp.getNext();
 		}
@@ -245,11 +247,12 @@ public class Partition {
 	}
 
 	public static Object[][] processInfo(ArrayList<MyProcess> processes){
-		Object[][] processInfo = new Object[processes.size()][3];
+		Object[][] processInfo = new Object[processes.size()][4];
 		for (int i = 0; i < processes.size(); i++) {
 			processInfo[i][0] = processes.get(i).getName();
 			processInfo[i][1] = processes.get(i).getTime();
-			processInfo[i][2] = processes.get(i).isLocked();
+			processInfo[i][2] = processes.get(i).getSize();
+			processInfo[i][3] = processes.get(i).isLocked();
 		}
 		return processInfo;
 	}

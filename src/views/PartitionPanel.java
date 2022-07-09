@@ -1,5 +1,7 @@
 package views;
 
+import models.MyProcess;
+import models.Queue;
 import presenters.Events;
 
 import javax.swing.*;
@@ -16,27 +18,34 @@ public class PartitionPanel extends JPanel {
     public static final Color BLUE_COLOR = Color.decode("#2980B9");
     private ActionListener actionListener;
 
-    public PartitionPanel(ActionListener actionListener, String partitionName){
+    public PartitionPanel(ActionListener actionListener, String partitionName, int partitionSize,
+                          Queue<MyProcess> processQueue){
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
         this.actionListener = actionListener;
         setLayout(new BorderLayout());
-        initPartitionName(partitionName);
-        initProcessesPanel();
+        initPartitionInfo(partitionName, partitionSize);
+        initProcessesPanel(processQueue, partitionName);
         initButtonsPanel(partitionName);
     }
 
-    private void initPartitionName(String partitionName){
-        JLabel partitionNameLb = new JLabel(partitionName);
-        partitionNameLb.setOpaque(true);
-        partitionNameLb.setBackground(Color.decode("#34495E"));
+    private void initPartitionInfo(String partitionName, int partitionSize){
+        JPanel partitionInfoPanel = new JPanel(new GridLayout(1,2));
+        partitionInfoPanel.setBackground(Color.decode("#34495E"));
+        JLabel partitionNameLb = new JLabel("Nombre: " + partitionName);
         partitionNameLb.setForeground(Color.WHITE);
         partitionNameLb.setHorizontalAlignment(SwingConstants.CENTER);
         partitionNameLb.setFont(new Font("Arial", Font.BOLD, 18));
-        add(partitionNameLb, BorderLayout.NORTH);
+        partitionInfoPanel.add(partitionNameLb);
+        JLabel partitionSizeLb = new JLabel("Tamaño: " + partitionSize);
+        partitionSizeLb.setForeground(Color.WHITE);
+        partitionSizeLb.setHorizontalAlignment(SwingConstants.CENTER);
+        partitionSizeLb.setFont(new Font("Arial", Font.BOLD, 18));
+        partitionInfoPanel.add(partitionSizeLb);
+        add(partitionInfoPanel, BorderLayout.NORTH);
     }
 
-    private void initProcessesPanel(){
-        JPanel processesPanel = new JPanel();
+    private void initProcessesPanel(Queue<MyProcess> processQueue, String partitionName){
+        ProcessesPanel processesPanel = new ProcessesPanel(actionListener, processQueue, partitionName);
         add(processesPanel, BorderLayout.CENTER);
     }
 

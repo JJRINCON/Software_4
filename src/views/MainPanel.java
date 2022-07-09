@@ -1,12 +1,14 @@
 package views;
 
+import models.Partition;
 import presenters.Events;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class MainPanel extends MyGridPanel{
+public class MainPanel extends JPanel{
 
 
     public static final String EXIT_BTN_TXT = "Salir";
@@ -15,18 +17,22 @@ public class MainPanel extends MyGridPanel{
     private PartitionsPanel partitionsPanel;
     private ActionListener actionListener;
     private MyGridPanel startSimulationPanel;
+    private JPanel centerPanel;
 
     public MainPanel(ActionListener actionListener){
         this.actionListener = actionListener;
+        setLayout(new BorderLayout());
+        centerPanel = new JPanel(new GridLayout(1,2));
         setBackground(WHITE_COLOR);
         initExitBtn();
         initPartitionsPanel();
         initStartSimulationPanel();
+        add(centerPanel, BorderLayout.CENTER);
     }
 
     public void initPartitionsPanel(){
         partitionsPanel = new PartitionsPanel(actionListener);
-        addComponent(partitionsPanel, 0, 1, 3, 1);
+        centerPanel.add(partitionsPanel);
     }
 
     private void initExitBtn(){
@@ -34,18 +40,31 @@ public class MainPanel extends MyGridPanel{
         exitBtnPanel.setBackground(RED_COLOR);
         JButton exitBtn = createBtn(EXIT_BTN_TXT, Color.decode("#DE1D2C"), actionListener, Events.EXIT.toString());
         exitBtnPanel.addComponentWithInsets(exitBtn, 11, 1, 1, 0.1, new Insets(5,0,5,0));
-        addComponent(exitBtnPanel, 0,0, 12, 0.005);
+        add(exitBtnPanel, BorderLayout.NORTH);
     }
 
     private void initStartSimulationPanel(){
         startSimulationPanel = new MyGridPanel();
         JButton startSimulationBtn = createBtn("Iniciar Simulacion", Color.decode("#2980B9"),
-                actionListener, Events.INIT_SIMLATION.toString());
+                actionListener, Events.INIT_SIMULATION.toString());
         startSimulationPanel.setBackground(Color.decode("#FDFEFE"));
         startSimulationPanel.addComponent(new JLabel(" "), 0, 3, 12, 0.3);
         startSimulationPanel.addComponent(startSimulationBtn, 4, 4, 5, 0.05);
         startSimulationPanel.addComponent(new JLabel(" "), 0, 5, 12, 0.4);
-        addComponent(startSimulationPanel, 3, 1, 9, 1);
+        centerPanel.add(startSimulationPanel);
+    }
+
+    public void initReportsPanel(ArrayList<Partition> partitions){
+        centerPanel.removeAll();
+        centerPanel.add(partitionsPanel);
+        ReportsPanel reportsPanel = new ReportsPanel(actionListener, partitions);
+        centerPanel.add(reportsPanel);
+        add(centerPanel);
+        updateUI();
+    }
+
+    public void updatePartitions(ArrayList<Partition> partitions){
+        partitionsPanel.updatePartitions(partitions);
     }
 
     private JButton createBtn(String txt, Color color, ActionListener listener, String command){

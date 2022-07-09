@@ -12,13 +12,17 @@ public class AddPartitionDialog extends JDialog {
     private AddPartitionPanel addPartitionPanel;
 
     public AddPartitionDialog(ActionListener actionListener, boolean isEditing){
+        setInfo();
+        addPartitionPanel = new AddPartitionPanel(actionListener, isEditing);
+        add(addPartitionPanel, BorderLayout.CENTER);
+    }
+
+    private void setInfo(){
         setSize(400, 300);
         setModal(true);
         setLayout(new BorderLayout());
         setResizable(false);
         setUndecorated(true);
-        addPartitionPanel = new AddPartitionPanel(actionListener, isEditing);
-        add(addPartitionPanel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
     }
 
@@ -28,5 +32,9 @@ public class AddPartitionDialog extends JDialog {
 
     public int getPartitionSize() throws EmptyPartitionSizeException, NumberFormatException {
         return addPartitionPanel.getPartitionSize();
+    }
+
+    public void setInitialInfo(String name, int size){
+        addPartitionPanel.setInitialInfo(name, size);
     }
 }

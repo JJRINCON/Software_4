@@ -1,6 +1,7 @@
 package views;
 
 import exceptions.EmptyProcessNameException;
+import exceptions.EmptyProcessSizeException;
 import exceptions.EmptyProcessTimeException;
 import presenters.Events;
 
@@ -12,6 +13,7 @@ public class AddProcessPanel extends MyGridPanel{
 
     private JTextField processNameTxt;
     private JTextField processTimeTxt;
+    private JTextField processSizeTxt;
     private JCheckBox isBlockedCb;
     private JButton addBtn;
 
@@ -25,11 +27,14 @@ public class AddProcessPanel extends MyGridPanel{
         initTitle(isEditing, partitionName);
         initProcessNameTxt();
         initProcessTimeTxt();
+        initProcessSizeTxt();
         initIsBlockedCb();
         if(isEditing){
-            initButtons(listener, Events.ACCEPT_EDIT_PROCESS.toString(), Events.CANCEL_EDIT_PROCESS.toString(), isEditing);
+            initButtons(listener, Events.ACCEPT_EDIT_PROCESS.toString(), Events.CANCEL_EDIT_PROCESS.toString(),
+                    partitionName, isEditing);
         }else{
-            initButtons(listener, Events.ACCEPT_ADD_PROCESS.toString(), Events.CANCEL_ADD_PROCESS.toString(), isEditing);
+            initButtons(listener, Events.ACCEPT_ADD_PROCESS.toString(), Events.CANCEL_ADD_PROCESS.toString(),
+                    partitionName, isEditing);
         }
     }
 
@@ -61,23 +66,34 @@ public class AddProcessPanel extends MyGridPanel{
         addComponent(new JLabel(" "), 0, 8, 11, 0.1);
     }
 
-    private void initIsBlockedCb(){
-        JLabel isBlockedLb = createLb("   Bloqueo: ", new Font("Arial", Font.BOLD, 14));
-        addComponent(isBlockedLb, 2, 9, 2, 0.1);
-        isBlockedCb = new JCheckBox();
-        isBlockedCb.setBackground(Color.WHITE);
-        isBlockedCb.setHorizontalAlignment(SwingConstants.CENTER);
-        addComponent(isBlockedCb, 7, 9, 1, 0.1);
+    private void initProcessSizeTxt(){
+        JLabel sizeLb = createLb("   Tamaño: ", new Font("Arial", Font.BOLD, 14));
+        addComponent(sizeLb, 2, 9, 2, 0.1);
+        processSizeTxt = new JTextField();
+        processSizeTxt.setText("");
+        addComponent(processSizeTxt, 5, 9, 5, 0.1);
         addComponent(new JLabel(" "), 0, 10, 11, 0.1);
     }
 
-    private void initButtons(ActionListener listener, String acceptEvent, String cancelEvent, boolean isEditing){
+    private void initIsBlockedCb(){
+        JLabel isBlockedLb = createLb("   Bloqueo: ", new Font("Arial", Font.BOLD, 14));
+        addComponent(isBlockedLb, 2, 11, 2, 0.1);
+        isBlockedCb = new JCheckBox();
+        isBlockedCb.setBackground(Color.WHITE);
+        isBlockedCb.setHorizontalAlignment(SwingConstants.CENTER);
+        addComponent(isBlockedCb, 7, 11, 1, 0.1);
+        addComponent(new JLabel(" "), 0, 12, 11, 0.1);
+    }
+
+    private void initButtons(ActionListener listener, String acceptEvent, String cancelEvent, String partitionName,
+                             boolean isEditing){
         String addBtnTxt = isEditing ? "Editar" : "Agregar";
         addBtn = createBtn(addBtnTxt, Color.decode("#00D48B"), listener, acceptEvent);
-        addComponent(addBtn, 3, 11, 2, 0.12);
+        addBtn.setName(partitionName);
+        addComponent(addBtn, 3, 13, 2, 0.12);
         JButton cancelBtn = createBtn("Cancelar", Color.decode("#FA512D"), listener, cancelEvent);
-        addComponent(cancelBtn, 7, 11, 2, 0.12);
-        addComponent(new JLabel(" "), 0, 12, 11, 0.05);
+        addComponent(cancelBtn, 7, 13, 2, 0.12);
+        addComponent(new JLabel(" "), 0, 14, 11, 0.05);
     }
 
     private JLabel createLb(String txt, Font font){
@@ -113,11 +129,21 @@ public class AddProcessPanel extends MyGridPanel{
         }
     }
 
-    public void setInitialInfo(String name, String time, boolean isLocked){
+    public int getProcessSize() throws EmptyProcessSizeException, NumberFormatException {
+        String size = processSizeTxt.getText();
+        if(!size.isEmpty()){
+            return Integer.parseInt(size);
+        }else{
+            throw new EmptyProcessSizeException();
+        }
+    }
+
+    public void setInitialInfo(String name, String time, String size, boolean isLocked){
         processNameTxt.setText(name);
         processTimeTxt.setText(time);
+        processSizeTxt.setText(size);
         isBlockedCb.setSelected(isLocked);
-        addBtn.setName(name);
+        addBtn.setName(addBtn.getName() + "," + name);
     }
 
     public boolean getIsBlocked(){

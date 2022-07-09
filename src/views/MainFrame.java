@@ -1,8 +1,10 @@
 package views;
 
+import models.Partition;
+
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class MainFrame extends JFrame {
 
@@ -22,5 +24,20 @@ public class MainFrame extends JFrame {
     public void initMainPanel(){
         mainPanel = new MainPanel(actionListener);
         add(mainPanel);
+    }
+
+    public void updatePartitions(ArrayList<Partition> partitions){
+        mainPanel.updatePartitions(partitions);
+    }
+
+    public void initReportsPanel(ArrayList<Partition> partitions){
+        mainPanel.initReportsPanel(partitions);
+    }
+
+    public void newSimulation(){
+        getContentPane().remove(mainPanel);
+        mainPanel = new MainPanel(actionListener);
+        add(mainPanel);
+        getContentPane().revalidate();
     }
 }
