@@ -106,12 +106,9 @@ public class Partition {
 	
 	
 	public MyProcess search(String name) {
-		Node<MyProcess> temp = processQueueReady.peek();
-		while (temp != null) {
-			if (temp.getData().getName().equals(name)) {
-				return temp.getData();
-			} else {
-				temp = temp.getNext();
+		for (MyProcess myProcess : processesQueue) {
+			if(myProcess.getName().equalsIgnoreCase(name)) {
+				return myProcess;
 			}
 		}
 		return null;
