@@ -2,6 +2,7 @@ package views;
 
 import exceptions.EmptyPartitionNameException;
 import exceptions.EmptyPartitionSizeException;
+import exceptions.InvalidSizeException;
 import presenters.Events;
 
 import javax.swing.*;
@@ -96,10 +97,15 @@ public class AddPartitionPanel extends MyGridPanel{
         }
     }
 
-    public int getPartitionSize() throws EmptyPartitionSizeException, NumberFormatException {
-        String text = partitionSizeTxt.getText();
-        if(!text.isEmpty()){
-            return Integer.parseInt(text);
+    public int getPartitionSize() throws EmptyPartitionSizeException, InvalidSizeException {
+        String size = partitionSizeTxt.getText();
+        if(!size.isEmpty()){
+            boolean isNumber = size.chars().allMatch(Character::isDigit);
+            if(isNumber){
+                return Integer.parseInt(size);
+            }else{
+                throw new InvalidSizeException();
+            }
         }else {
             throw new EmptyPartitionSizeException();
         }

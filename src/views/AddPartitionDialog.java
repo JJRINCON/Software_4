@@ -2,6 +2,7 @@ package views;
 
 import exceptions.EmptyPartitionNameException;
 import exceptions.EmptyPartitionSizeException;
+import exceptions.InvalidSizeException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +31,7 @@ public class AddPartitionDialog extends JDialog {
         return addPartitionPanel.getPartitionName();
     }
 
-    public int getPartitionSize() throws EmptyPartitionSizeException, NumberFormatException {
+    public int getPartitionSize() throws EmptyPartitionSizeException, InvalidSizeException {
         return addPartitionPanel.getPartitionSize();
     }
 

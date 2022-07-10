@@ -1,8 +1,6 @@
 package views;
 
-import exceptions.EmptyProcessNameException;
-import exceptions.EmptyProcessSizeException;
-import exceptions.EmptyProcessTimeException;
+import exceptions.*;
 import presenters.Events;
 
 import javax.swing.*;
@@ -120,19 +118,29 @@ public class AddProcessPanel extends MyGridPanel{
         }
     }
 
-    public int getProcessTime() throws EmptyProcessTimeException, NumberFormatException {
-        String text = processTimeTxt.getText();
-        if(!text.isEmpty()){
-            return Integer.parseInt(text);
+    public int getProcessTime() throws EmptyProcessTimeException, InvalidTimeException {
+        String time = processTimeTxt.getText();
+        if(!time.isEmpty()){
+            boolean isNumber = time.chars().allMatch(Character::isDigit);
+            if(isNumber){
+                return Integer.parseInt(time);
+            }else{
+                throw new InvalidTimeException();
+            }
         }else{
             throw new EmptyProcessTimeException();
         }
     }
 
-    public int getProcessSize() throws EmptyProcessSizeException, NumberFormatException {
+    public int getProcessSize() throws EmptyProcessSizeException, InvalidSizeException {
         String size = processSizeTxt.getText();
         if(!size.isEmpty()){
-            return Integer.parseInt(size);
+            boolean isNumber = size.chars().allMatch(Character::isDigit);
+            if(isNumber){
+                return Integer.parseInt(size);
+            }else{
+                throw new InvalidSizeException();
+            }
         }else{
             throw new EmptyProcessSizeException();
         }

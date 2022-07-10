@@ -118,11 +118,9 @@ public class Presenter implements ActionListener {
             manager.addPartition(name, size);
             mainFrame.updatePartitions(manager.getPartitions());
             addPartitionDialog.dispose();
-        } catch (EmptyPartitionNameException | EmptyPartitionSizeException | RepeatedNameException e) {
+        } catch (EmptyPartitionNameException | EmptyPartitionSizeException | RepeatedNameException |
+                 InvalidSizeException e) {
             JOptionPane.showMessageDialog(mainFrame, e.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException e){
-            JOptionPane.showMessageDialog(mainFrame, "El tamaño debe ser un numero",
-                    "ERROR!!!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -140,11 +138,9 @@ public class Presenter implements ActionListener {
                                         editPartitionDialog.getPartitionSize());
             editPartitionDialog.dispose();
             mainFrame.updatePartitions(manager.getPartitions());
-        } catch (EmptyPartitionNameException | EmptyPartitionSizeException | RepeatedNameException ex) {
+        } catch (EmptyPartitionNameException | EmptyPartitionSizeException | RepeatedNameException |
+                 InvalidSizeException ex) {
             JOptionPane.showMessageDialog(mainFrame, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-        } catch (NumberFormatException ex){
-            JOptionPane.showMessageDialog(mainFrame, "El tamaño debe ser un numero",
-                    "ERROR!!!", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -170,10 +166,8 @@ public class Presenter implements ActionListener {
             mainFrame.updatePartitions(manager.getPartitions());
             addProcessDialog.dispose();
         } catch (EmptyProcessNameException | EmptyProcessTimeException | EmptyProcessSizeException |
-                 RepeatedNameException ex) {
+                 RepeatedNameException | InvalidTimeException | InvalidSizeException ex) {
             JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
-        } catch (NumberFormatException ex){
-            JOptionPane.showMessageDialog(mainFrame,"El tiempo debe ser un numero");
         }
     }
 
@@ -198,6 +192,7 @@ public class Presenter implements ActionListener {
     private void manageAcceptEditProcessAction(ActionEvent e) {
         try {
             String[] info = ((JButton) e.getSource()).getName().split(",");
+            System.out.println("info de proceso a editar: " + Arrays.toString(info));
             if(!info[1].equals(editProcessDialog.getProcessName())){
                 manager.verifyProcessName(editProcessDialog.getProcessName());
             }
@@ -206,11 +201,13 @@ public class Presenter implements ActionListener {
             mainFrame.updatePartitions(manager.getPartitions());
             editProcessDialog.dispose();
         } catch (EmptyProcessNameException | RepeatedNameException | EmptyProcessTimeException |
-                 EmptyProcessSizeException ex) {
+                 EmptyProcessSizeException | InvalidSizeException | InvalidTimeException ex) {
             JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
-        } catch (NumberFormatException ex){
-            JOptionPane.showMessageDialog(mainFrame,"El valor ingresado debe ser un numero");
         }
+    }
+
+    private void showError(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "ERROR!!", JOptionPane.ERROR_MESSAGE);
     }
 
     private void manageDeleteProcessAction(ActionEvent e) {

@@ -1,9 +1,7 @@
 package views;
 
 
-import exceptions.EmptyProcessNameException;
-import exceptions.EmptyProcessSizeException;
-import exceptions.EmptyProcessTimeException;
+import exceptions.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,11 +30,11 @@ public class AddProcessDialog extends JDialog {
         return addProcessPanel.getProcessName();
     }
 
-    public int getProcessTime() throws EmptyProcessTimeException, NumberFormatException {
+    public int getProcessTime() throws EmptyProcessTimeException, InvalidTimeException {
         return addProcessPanel.getProcessTime();
     }
 
-    public int getProcessSize() throws EmptyProcessSizeException, NumberFormatException {
+    public int getProcessSize() throws EmptyProcessSizeException, InvalidSizeException {
         return addProcessPanel.getProcessSize();
     }
 

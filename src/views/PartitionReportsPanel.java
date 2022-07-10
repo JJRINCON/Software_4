@@ -21,7 +21,7 @@ public class PartitionReportsPanel extends JPanel {
         setBackground(Color.decode("#FDFEFE"));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
         JTabbedPane reports = new JTabbedPane();
-        reports.setFont(new Font("Arial", Font.PLAIN, 16));
+        reports.setFont(new Font("Arial", Font.PLAIN, 18));
         reports.setBackground(Color.decode("#FDFEFE"));
         TablePanel readyTable = new TablePanel(Partition.processInfo(readyProcess), COLUMNS);
         reports.add("Listos", readyTable);
