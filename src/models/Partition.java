@@ -10,6 +10,7 @@ public class Partition {
 	private String name;
 	private int size;
 	private Queue<MyProcess> processQueueReady;
+	private ArrayList<MyProcess> processesQueue;
 	private ArrayList<MyProcess> readyAndDespachado;
 	private ArrayList<MyProcess> lockedAndWakeUp;
 	private ArrayList<MyProcess> executing;
@@ -21,7 +22,7 @@ public class Partition {
 		
 		this.name = name;
 		this.size = size;
-		
+		this.processesQueue = new ArrayList<>();
 		this.processQueueReady = new Queue<>();
 		this.lockedAndWakeUp = new ArrayList<>();
 		this.processTerminated = new ArrayList<>();
@@ -33,6 +34,7 @@ public class Partition {
 
 	public boolean addProcess(MyProcess myProcess) {
 		if (search(myProcess.getName()) == null) {
+			processesQueue.add(myProcess);
 			if(myProcess.getSize() <= this.size) {				
 				readyAndDespachado.add(new MyProcess(myProcess.getName(), myProcess.getTime(),myProcess.getSize(), myProcess.isLocked()));
 				processQueueReady.push(myProcess);
@@ -53,7 +55,7 @@ public class Partition {
 	 */
 	public void editProcess(String actualName, String name, int time,int size, boolean lockedStatus) {
 		edit(search(actualName), name, time,size, lockedStatus);
-		edit(searchInList(actualName, readyAndDespachado), name, time,size, lockedStatus);
+		edit(searchInList(actualName, processesQueue), name, time,size, lockedStatus);
 	}
 	
 	private void edit(MyProcess myProcess, String name, int time,int size, boolean lockedStatus) {
@@ -71,7 +73,7 @@ public class Partition {
 	public boolean deleteProccess(String name) {
 		boolean isDelete = false;
 		Node<MyProcess> temp = processQueueReady.peek();
-		readyAndDespachado.remove(searchInList(name, readyAndDespachado));
+		processesQueue.remove(searchInList(name, processesQueue));
 		if (temp.getData().getName().equals(name)) {
 			processQueueReady.pop();
 			isDelete = true;
@@ -163,12 +165,10 @@ public class Partition {
 	}
 
 	public void verifyProcessName(String name) throws RepeatedNameException {
-		Node<MyProcess> temp = processQueueReady.peek();
-		while(temp != null){
-			if(temp.getData().getName().equals(name)){
+		for (MyProcess myProcess : processesQueue) {
+			if (myProcess.getName().equalsIgnoreCase(name)) {
 				throw new RepeatedNameException(name);
 			}
-			temp = temp.getNext();
 		}
 	}
 
@@ -247,6 +247,10 @@ public class Partition {
 	 */
 	public ArrayList<MyProcess> getOverSize() {
 		return overSize;
+	}
+	
+	public ArrayList<MyProcess> getProcessesQueue() {
+		return processesQueue;
 	}
 	
 	public int getSize() {

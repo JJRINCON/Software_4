@@ -7,6 +7,7 @@ import presenters.Events;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class PartitionPanel extends JPanel {
 
@@ -19,7 +20,7 @@ public class PartitionPanel extends JPanel {
     private ActionListener actionListener;
 
     public PartitionPanel(ActionListener actionListener, String partitionName, int partitionSize,
-                          Queue<MyProcess> processQueue){
+                          ArrayList<MyProcess> processQueue){
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true));
         this.actionListener = actionListener;
         setLayout(new BorderLayout());
@@ -44,7 +45,7 @@ public class PartitionPanel extends JPanel {
         add(partitionInfoPanel, BorderLayout.NORTH);
     }
 
-    private void initProcessesPanel(Queue<MyProcess> processQueue, String partitionName){
+    private void initProcessesPanel(ArrayList<MyProcess> processQueue, String partitionName){
         ProcessesPanel processesPanel = new ProcessesPanel(actionListener, processQueue, partitionName);
         add(processesPanel, BorderLayout.CENTER);
     }

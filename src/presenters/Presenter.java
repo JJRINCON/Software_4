@@ -209,7 +209,7 @@ public class Presenter implements ActionListener {
                  EmptyProcessSizeException ex) {
             JOptionPane.showMessageDialog(mainFrame, ex.getMessage());
         } catch (NumberFormatException ex){
-            JOptionPane.showMessageDialog(mainFrame,"El tiempo debe ser un numero");
+            JOptionPane.showMessageDialog(mainFrame,"El valor ingresado debe ser un numero");
         }
     }
 

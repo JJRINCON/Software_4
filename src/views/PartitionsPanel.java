@@ -66,7 +66,7 @@ public class PartitionsPanel extends MyGridPanel{
             partitionsPanel = new JPanel(new GridLayout(2,1, 5,5));
             partitionsPanel.setBackground(WHITE_COLOR);
             partitionsPanel.add(new PartitionPanel(actionListener, partitions.get(0).getName(),
-                    partitions.get(0).getSize(), partitions.get(0).getProcessQueue()));
+                    partitions.get(0).getSize(), partitions.get(0).getProcessesQueue()));
             partitionsPanel.add(new JLabel(" "));
         }else{
             partitionsPanel = new JPanel(new GridLayout(partitions.size(), 1, 5, 5));
@@ -78,7 +78,7 @@ public class PartitionsPanel extends MyGridPanel{
     private void addPartitions(ArrayList<Partition> partitions){
         for(Partition partition : partitions){
             PartitionPanel partitionPanel = new PartitionPanel(actionListener, partition.getName(), partition.getSize(),
-                                                                partition.getProcessQueue());
+                                                                partition.getProcessesQueue());
             partitionPanel.setPreferredSize(new Dimension((int) (WIDTH * 0.4), (int) (HEIGHT * 0.4)));
             partitionsPanel.add(partitionPanel);
         }
