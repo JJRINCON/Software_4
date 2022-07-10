@@ -10,16 +10,18 @@ import java.util.ArrayList;
 public class PartitionReportsPanel extends JPanel {
 
     private static final String[] COLUMNS = {"Nombre", "Tiempo", "Tamaño", "Bloqueo"};
+    private static final String[] OVER_SIZE_COLUMNS = {"Nombre", "Descripcion"};
 
     public PartitionReportsPanel(ArrayList<MyProcess> readyProcess, ArrayList<MyProcess> dispatchedProcess,
                                  ArrayList<MyProcess> executingProcess, ArrayList<MyProcess> expiredProcess,
                                  ArrayList<MyProcess> toLockedProcess, ArrayList<MyProcess> lockedProcess,
-                                 ArrayList<MyProcess> wakeUpProcess, ArrayList<MyProcess> terminatedProcess){
+                                 ArrayList<MyProcess> wakeUpProcess, ArrayList<MyProcess> terminatedProcess,
+                                 ArrayList<MyProcess> overSizeProcess){
         setLayout(new BorderLayout());
         setBackground(Color.decode("#FDFEFE"));
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
-        initTitle();
         JTabbedPane reports = new JTabbedPane();
+        reports.setFont(new Font("Arial", Font.PLAIN, 16));
         reports.setBackground(Color.decode("#FDFEFE"));
         TablePanel readyTable = new TablePanel(Partition.processInfo(readyProcess), COLUMNS);
         reports.add("Listos", readyTable);
@@ -44,14 +46,10 @@ public class PartitionReportsPanel extends JPanel {
 
         TablePanel terminatedTable = new TablePanel(Partition.processInfo(terminatedProcess), COLUMNS);
         reports.add("Terminados", terminatedTable);
-        add(reports, BorderLayout.CENTER);
-    }
 
-    private void initTitle(){
-        JLabel titleLb = new JLabel("REPORTES");
-        titleLb.setForeground(Color.WHITE);
-        titleLb.setFont(new Font("Arial", Font.BOLD, 16));
-        titleLb.setHorizontalAlignment(SwingConstants.CENTER);
-        add(titleLb, BorderLayout.NORTH);
+        TablePanel overSizeTable = new TablePanel(Partition.processOverSizeInfo(overSizeProcess), OVER_SIZE_COLUMNS);
+        reports.add("Tamaño exedido", overSizeTable);
+
+        add(reports, BorderLayout.CENTER);
     }
 }

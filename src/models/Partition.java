@@ -275,4 +275,13 @@ public class Partition {
 		}
 		return processInfo;
 	}
+
+	public static Object[][] processOverSizeInfo(ArrayList<MyProcess> overSizeProcess){
+		Object[][] processInfo = new Object[overSizeProcess.size()][2];
+		for (int i = 0; i < overSizeProcess.size(); i++) {
+			processInfo[i][0] = overSizeProcess.get(i).getName();
+			processInfo[i][1] = "Exedio el tamaño de la particion";
+		}
+		return processInfo;
+	}
 }
