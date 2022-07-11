@@ -217,6 +217,7 @@ public class Presenter implements ActionListener {
     }
 
     private void manageInitSimulationAction() {
+    	
         if(!manager.getPartitions().isEmpty()){
             manager.initSimulation();
             mainFrame.initReportsPanel(manager.getPartitions());

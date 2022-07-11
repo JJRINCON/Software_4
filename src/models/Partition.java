@@ -9,6 +9,7 @@ public class Partition {
 
 	private String name;
 	private int size;
+	private int time;
 	private Queue<MyProcess> processQueueReady;
 	private ArrayList<MyProcess> processesQueue;
 	private ArrayList<MyProcess> readyAndDespachado;
@@ -30,6 +31,12 @@ public class Partition {
 		expired = new ArrayList<>();
 		readyAndDespachado = new ArrayList<>();
 		this.overSize = new ArrayList<>();
+	}
+
+	public Partition(String name2, int size2, int calculateTime) {
+		this.name = name2;
+		this.size = size2;
+		this.time = calculateTime;
 	}
 
 	public boolean addProcess(MyProcess myProcess) {
@@ -286,5 +293,13 @@ public class Partition {
 			processInfo[i][1] = "Exedio el tamaño de la particion";
 		}
 		return processInfo;
+	}
+	
+	public int getTime() {
+		return time;
+	}
+	
+	public void setTime(int time) {
+		this.time = time;
 	}
 }

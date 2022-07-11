@@ -8,9 +8,27 @@ import java.util.ArrayList;
 public class Manager {
 
 	private ArrayList<Partition> partitions;
+	private ArrayList<Partition> timeTermined;
+	private ArrayList<MyProcess> terminated;
 	
 	public Manager() {
 		partitions = new ArrayList<>();
+		terminated = new ArrayList<>();
+	}
+	
+	public void termined(){
+		 timeTermined = new ArrayList<>();
+		for (Partition partition : partitions) {
+			timeTermined.add(new Partition(partition.getName(), partition.getSize(), calculateTime(partition)));
+		}
+	}
+	
+	private int calculateTime(Partition p) {
+		int time =0;
+		for (MyProcess process : p.getReadyProccess()) {
+			time += process.getTime();
+		}
+		return time;
 	}
 	
 	public void addPartition(String name, int size) {
@@ -65,6 +83,9 @@ public class Manager {
 		Partition partition = searchPartition(partitionName);
 		if (partition!=null) {
 			partition.addProcess(new MyProcess(processName, time, size, isLocked));
+			if (size <= partition.getSize()) {
+				terminated.add(new MyProcess(processName, 0, size, isLocked));
+			}
 			return true;
 		}else {
 			return false;
@@ -92,6 +113,7 @@ public class Manager {
 	}
 
 	public void initSimulation(){
+		termined();
 		for(Partition partition : partitions){
 			partition.startSimulation();
 		}
@@ -108,8 +130,18 @@ public class Manager {
 		}
 		return null;
 	}
+	
+	
 
 	public ArrayList<Partition> getPartitions() {
 		return partitions;
+	}
+	
+	public ArrayList<Partition> getTimeTermined() {
+		return timeTermined;
+	}
+	
+	public ArrayList<MyProcess> getTerminated() {
+		return terminated;
 	}
 }
