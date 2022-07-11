@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class PartitionReportsPanel extends JPanel {
 
-    private static final String[] COLUMNS = {"Nombre", "Tiempo", "TamaÃ±o", "Bloqueo"};
+    private static final String[] COLUMNS = {"Nombre", "Tiempo", "Tamaño", "Bloqueo"};
     private static final String[] OVER_SIZE_COLUMNS = {"Nombre", "Descripcion"};
 
     public PartitionReportsPanel(ArrayList<MyProcess> readyProcess, ArrayList<MyProcess> dispatchedProcess,
@@ -48,7 +48,7 @@ public class PartitionReportsPanel extends JPanel {
         reports.add("Terminados", terminatedTable);
 
         TablePanel overSizeTable = new TablePanel(Partition.processOverSizeInfo(overSizeProcess), OVER_SIZE_COLUMNS);
-        reports.add("TamaÃ±o exedido", overSizeTable);
+        reports.add("Tamaño exedido", overSizeTable);
 
         add(reports, BorderLayout.CENTER);
     }

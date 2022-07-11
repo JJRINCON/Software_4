@@ -15,7 +15,7 @@ public class AddPartitionPanel extends MyGridPanel{
     private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 18);
     private static final String TXT_PARTITION_NAME_LB = "Nombre: ";
     private static final Font FONT_PARTITION_NAME_LB = new Font("Arial", Font.PLAIN, 12);
-    private static final String TXT_PARTITION_SIZE_LB = "TamaÃ±o: ";
+    private static final String TXT_PARTITION_SIZE_LB = "Tamaño: ";
     private static final Color WHITE_COLOR = Color.decode("#FDFEFE");
     private JTextField partitionNameTxt;
     private JTextField partitionSizeTxt;

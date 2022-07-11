@@ -56,6 +56,7 @@ public class Partition {
 	public void editProcess(String actualName, String name, int time,int size, boolean lockedStatus) {
 		edit(search(actualName), name, time,size, lockedStatus);
 		edit(searchInList(actualName, processesQueue), name, time,size, lockedStatus);
+		edit(searchInList(actualName, readyAndDespachado), name, time,size, lockedStatus);
 	}
 	
 	private void edit(MyProcess myProcess, String name, int time,int size, boolean lockedStatus) {
@@ -74,6 +75,7 @@ public class Partition {
 		boolean isDelete = false;
 		Node<MyProcess> temp = processQueueReady.peek();
 		processesQueue.remove(searchInList(name, processesQueue));
+		readyAndDespachado.remove(searchInList(name, readyAndDespachado));
 		if (temp.getData().getName().equals(name)) {
 			processQueueReady.pop();
 			isDelete = true;
@@ -281,7 +283,7 @@ public class Partition {
 		Object[][] processInfo = new Object[overSizeProcess.size()][2];
 		for (int i = 0; i < overSizeProcess.size(); i++) {
 			processInfo[i][0] = overSizeProcess.get(i).getName();
-			processInfo[i][1] = "Exedio el tamaÃ±o de la particion";
+			processInfo[i][1] = "Exedio el tamaño de la particion";
 		}
 		return processInfo;
 	}

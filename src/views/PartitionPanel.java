@@ -37,7 +37,7 @@ public class PartitionPanel extends JPanel {
         partitionNameLb.setHorizontalAlignment(SwingConstants.CENTER);
         partitionNameLb.setFont(new Font("Arial", Font.BOLD, 18));
         partitionInfoPanel.add(partitionNameLb);
-        JLabel partitionSizeLb = new JLabel("TamaÃ±o: " + partitionSize);
+        JLabel partitionSizeLb = new JLabel("Tamaño: " + partitionSize);
         partitionSizeLb.setForeground(Color.WHITE);
         partitionSizeLb.setHorizontalAlignment(SwingConstants.CENTER);
         partitionSizeLb.setFont(new Font("Arial", Font.BOLD, 18));
