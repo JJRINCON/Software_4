@@ -5,7 +5,7 @@ import exceptions.RepeatedNameException;
 import java.util.ArrayList;
 
 
-public class Partition {
+public class Partition implements Comparable<Partition>{
 
 	private String name;
 	private int size;
@@ -18,11 +18,13 @@ public class Partition {
 	private ArrayList<MyProcess> expired;
 	private ArrayList<MyProcess> processTerminated;
 	private ArrayList<MyProcess> overSize;
-
-	public Partition(String name, int size) {
+	private ArrayList<MyProcess> terminatedArrayList;
+	
+	public Partition(String name, int size, ArrayList<MyProcess> termined) {
 		
 		this.name = name;
 		this.size = size;
+		this.terminatedArrayList = termined;
 		this.processesQueue = new ArrayList<>();
 		this.processQueueReady = new Queue<>();
 		this.lockedAndWakeUp = new ArrayList<>();
@@ -143,6 +145,7 @@ public class Partition {
 			MyProcess myProcess = processQueueReady.pop();
 			myProcess.setTime((int)myProcess.getTime());
 			processTerminated.add(myProcess);
+			terminatedArrayList.add(myProcess);
 		}
 	}
 
@@ -295,11 +298,26 @@ public class Partition {
 		return processInfo;
 	}
 	
+	public static Object[][] partitionTermined(ArrayList<Partition> termined){
+		Object[][] processInfo = new Object[termined.size()][2];
+		for (int i = 0; i < termined.size(); i++) {
+			processInfo[i][0] = termined.get(i).getName();
+			processInfo[i][1] = termined.get(i).getTime();
+		}
+		return processInfo;
+	}
+	
 	public int getTime() {
 		return time;
 	}
 	
 	public void setTime(int time) {
 		this.time = time;
+	}
+
+	@Override
+	public int compareTo(Partition o) {
+		// TODO Auto-generated method stub
+		return getTime()-o.getTime();
 	}
 }

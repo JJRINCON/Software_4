@@ -3,6 +3,7 @@ package models;
 import exceptions.RepeatedNameException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Manager {
@@ -32,7 +33,7 @@ public class Manager {
 	}
 	
 	public void addPartition(String name, int size) {
-		partitions.add(new Partition(name, size));
+		partitions.add(new Partition(name, size, this.terminated));
 	}
 	
 	public boolean editPartition(String name, String newName, int size) {
@@ -83,9 +84,9 @@ public class Manager {
 		Partition partition = searchPartition(partitionName);
 		if (partition!=null) {
 			partition.addProcess(new MyProcess(processName, time, size, isLocked));
-			if (size <= partition.getSize()) {
-				terminated.add(new MyProcess(processName, 0, size, isLocked));
-			}
+//			if (size <= partition.getSize()) {
+//				terminated.add(new MyProcess(processName, 0, size, isLocked));
+//			}
 			return true;
 		}else {
 			return false;
@@ -114,6 +115,7 @@ public class Manager {
 
 	public void initSimulation(){
 		termined();
+		Collections.sort(terminated);
 		for(Partition partition : partitions){
 			partition.startSimulation();
 		}
@@ -138,6 +140,7 @@ public class Manager {
 	}
 	
 	public ArrayList<Partition> getTimeTermined() {
+		Collections.sort(timeTermined);
 		return timeTermined;
 	}
 	

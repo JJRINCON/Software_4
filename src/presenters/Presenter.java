@@ -220,7 +220,7 @@ public class Presenter implements ActionListener {
     	
         if(!manager.getPartitions().isEmpty()){
             manager.initSimulation();
-            mainFrame.initReportsPanel(manager.getPartitions());
+            mainFrame.initReportsPanel(manager.getPartitions(), manager.getTimeTermined(),manager.getTerminated());
         }else{
             JOptionPane.showMessageDialog(mainFrame, "Debe haber almenos una particion para poder iniciar la simulacion",
                                             "ALERTA", JOptionPane.INFORMATION_MESSAGE);

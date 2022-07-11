@@ -1,5 +1,6 @@
 package views;
 
+import models.MyProcess;
 import models.Partition;
 
 import javax.swing.*;
@@ -30,8 +31,8 @@ public class MainFrame extends JFrame {
         mainPanel.updatePartitions(partitions);
     }
 
-    public void initReportsPanel(ArrayList<Partition> partitions){
-        mainPanel.initReportsPanel(partitions);
+    public void initReportsPanel(ArrayList<Partition> partitions,ArrayList<Partition> termined,ArrayList<MyProcess> finish){
+        mainPanel.initReportsPanel(partitions, termined,finish);
     }
 
     public void newSimulation(){

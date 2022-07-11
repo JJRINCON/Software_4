@@ -1,6 +1,6 @@
 package models;
 
-public class MyProcess {
+public class MyProcess implements Comparable<MyProcess>{
 
 	private String name;
 	private int size;
@@ -49,6 +49,11 @@ public class MyProcess {
 		
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+
+	@Override
+	public int compareTo(MyProcess o) {
+		return (int) (getTime()-o.getTime());
 	}
 	
 }

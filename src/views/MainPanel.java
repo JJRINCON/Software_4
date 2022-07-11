@@ -1,5 +1,6 @@
 package views;
 
+import models.MyProcess;
 import models.Partition;
 import presenters.Events;
 
@@ -54,10 +55,10 @@ public class MainPanel extends JPanel{
         centerPanel.add(startSimulationPanel);
     }
 
-    public void initReportsPanel(ArrayList<Partition> partitions){
+    public void initReportsPanel(ArrayList<Partition> partitions,ArrayList<Partition> termined,ArrayList<MyProcess> finish){
         centerPanel.removeAll();
         centerPanel.add(partitionsPanel);
-        ReportsPanel reportsPanel = new ReportsPanel(actionListener, partitions);
+        ReportsPanel reportsPanel = new ReportsPanel(actionListener, partitions, termined,finish);
         centerPanel.add(reportsPanel);
         add(centerPanel);
         updateUI();

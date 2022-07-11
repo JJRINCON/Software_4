@@ -1,5 +1,6 @@
 package views;
 
+import models.MyProcess;
 import models.Partition;
 import presenters.Events;
 
@@ -11,17 +12,18 @@ import java.util.ArrayList;
 public class ReportsPanel extends JPanel {
 
     private static final String NEW_SIMULATION_BTN_TXT = "Nueva simulacion";
+    private static final String[] TERMINED_COLUMNS = {"Nombre", "Tiempo"};
     private static final Color BLUE_COLOR = Color.decode("#2980B9");
 
-    public ReportsPanel(ActionListener listener, ArrayList<Partition> partitions){
+    public ReportsPanel(ActionListener listener, ArrayList<Partition> partitions,ArrayList<Partition> termined,ArrayList<MyProcess> finish){
         setLayout(new BorderLayout());
         setBackground(Color.decode("#FDFEFE"));
         initTitle();
-        addReports(partitions);
+        addReports(partitions, termined, finish);
         initNewSimulationBtn(listener);
     }
 
-    public void addReports(ArrayList<Partition> partitions){
+    public void addReports(ArrayList<Partition> partitions, ArrayList<Partition> termined, ArrayList<MyProcess> finish){
         JTabbedPane reports = new JTabbedPane();
         reports.setFont(new Font("Arial", Font.BOLD, 18));
         for(Partition partition : partitions){
@@ -32,6 +34,10 @@ public class ReportsPanel extends JPanel {
                     partition.getProcessTerminated(), partition.getOverSize());
             reports.add(partitionReportsPanel, partition.getName());
         }
+        TablePanel terminedTablePanel = new TablePanel(Partition.partitionTermined(termined), TERMINED_COLUMNS);
+        reports.add("Tiempo de terminacion", terminedTablePanel);
+        TablePanel terminedProcessTablePanel = new TablePanel(Partition.processInfo(finish), TERMINED_COLUMNS);
+        reports.add("Procesos Terminados", terminedProcessTablePanel);
         add(reports, BorderLayout.CENTER);
     }
 
